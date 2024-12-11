@@ -2405,6 +2405,47 @@ blockquote footer cite::before {
     width: auto;
 }
 
+/* ---增加备案样式--- */
+
+
+@media screen and (max-width: 768px) {
+    #footer-bar .beian-group {
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+#footer-bar .beian-group {
+	display: flex;
+	gap: 8px;
+	flex-wrap: wrap
+}
+
+#footer-bar .beian-group .footer-bar-link {
+	font-size: 12px;
+	font-weight: 400;
+	color: var(--heo-secondtext);
+	padding: 0;
+	margin: 0;
+	display: flex;
+	align-items: center;
+	gap: 3px
+}
+
+#footer-bar .beian-group .footer-bar-link span {
+	transition: .3s
+}
+
+img.beian-icon {
+	height: 14px;
+	min-width: 13px;
+	min-height: 14px
+}
+
+/* ---备案样式截止--- */
+
+
 #page-header {
     position: relative;
     width: 100%;
@@ -14147,7 +14188,7 @@ figure.gallery-group:hover .gallery-group-name::after {
     }
 }
 
-.footer-banner-right {
+.footer-bar-right {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -15247,7 +15288,8 @@ span.hexo-douban-pagenum {
     margin-left: 8px
 }
 
-#footer-banner {
+#footer-bar {
+    order: 2;  /* 调整排序 */
     padding: 1rem;
     color: var(--heo-fontcolor);
     margin-top: 1rem;
@@ -15259,7 +15301,7 @@ span.hexo-douban-pagenum {
     border-top: var(--style-border-always);
 }
 
-#footer-banner .footer-banner-links {
+#footer-bar .footer-bar-links {
     display: flex;
     justify-content: space-between;
     max-width: 1400px;
@@ -15270,14 +15312,22 @@ span.hexo-douban-pagenum {
     line-height: 1;
 }
 
-#footer-banner .footer-banner-left {
+/* 移动端样式 */
+@media (max-width: 768px) {
+    #footer-bar .footer-bar-links {
+        justify-content: center; /* 当视口宽度小于768px时，使用center对齐 */
+    }
+}
+
+
+#footer-bar .footer-bar-left {
     display: flex;
     flex-wrap: wrap;
     min-height: 32px;
     align-items: center;
 }
 
-#footer-banner .footer-banner-link {
+#footer-bar .footer-bar-link {
     margin: 0 4px;
     color: var(--heo-fontcolor);
     font-size: .8rem;
@@ -15288,28 +15338,28 @@ span.hexo-douban-pagenum {
     line-height: 1
 }
 
-#footer-banner .footer-banner-link.cc {
+#footer-bar .footer-bar-link.cc {
     margin-right: 0rem;
 }
 
-#footer-banner .footer-banner-link.cc i:not(:last-child) {
+#footer-bar .footer-bar-link.cc i:not(:last-child) {
     margin-right: .5rem
 }
 
-#footer-banner .footer-banner-link.cc i {
+#footer-bar .footer-bar-link.cc i {
     font-size: 18px;
 }
 
-#footer-banner .footer-banner-link:hover {
+#footer-bar .footer-bar-link:hover {
     color: var(--heo-lighttext);
     background: var(--heo-main-op)
 }
 
-#footer-banner > div > div.footer-banner-left > span {
+#footer-bar > div > div.footer-bar-left > span {
     margin-right: 1rem;
 }
 
-#footer-banner .footer-banner-right a:hover {
+#footer-bar .footer-bar-right a:hover {
     color: var(--heo-lighttext);
 }
 

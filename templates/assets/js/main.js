@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const $scrollDownEle = document.getElementById('scroll-down')
         const $homeTop = document.getElementById('home_top')
         $scrollDownEle && $scrollDownEle.addEventListener('click', function () {
-            $homeTop &&  btf.scrollToDest($homeTop.offsetTop, 300)
+            $homeTop && btf.scrollToDest($homeTop.offsetTop, 300)
 
         })
     }
@@ -163,28 +163,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 $('#mobile-toc-button').attr('style', 'display: none');
             }
         } else {
+            // 如果有标题，则初始化 TOC（目录）插件（tocbot）
             tocbot.init({
-                tocSelector: '.toc-content',
-                contentSelector: '.post-content',
-                headingSelector: 'h1,h2,h3,h4,h5,h6',
-                listItemClass: 'toc-item',
-                activeLinkClass: 'active',
-                activeListItemClass: 'active',
-                headingsOffset: -400,
-                scrollSmooth: true,
-                scrollSmoothOffset: -70,
-                tocScrollOffset: 50,
+                tocSelector: '.toc-content',           // 目录内容的容器选择器
+                contentSelector: '.post-content',      // 文章内容的容器选择器
+                headingSelector: 'h1,h2,h3,h4,h5,h6', // 所有标题的选择器（h1 到 h6）
+                listItemClass: 'toc-item',             // 目录项的类名
+                activeLinkClass: 'active',             // 当前活动链接的类名
+                activeListItemClass: 'active',        // 当前活动目录项的类名
+                headingsOffset: -400,                 // 目录滚动时，标题的偏移量
+                scrollSmooth: true,                   // 启用平滑滚动效果
+                scrollSmoothOffset: -70,              // 平滑滚动时的偏移量
+                tocScrollOffset: 50,                  // 目录滚动时的偏移量
             });
 
-            const $cardTocLayout = document.getElementById('card-toc')
-            const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0]
+            // 获取目录卡片布局元素（#card-toc）
+            const $cardTocLayout = document.getElementById('card-toc');
+            // 获取目录内容容器（.toc-content）
+            const $cardToc = $cardTocLayout.getElementsByClassName('toc-content')[0];
 
-            // toc元素點擊
+            // 为目录内容添加点击事件监听器，点击后在移动设备下关闭目录
             $cardToc.addEventListener('click', (ele) => {
+                // 判断屏幕宽度小于900px时，关闭目录卡片
                 if (window.innerWidth < 900) {
                     $cardTocLayout.classList.remove("open");
                 }
-            })
+            });
 
         }
     }
@@ -202,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
             newEle.className = 'haofont hao-icon-sign-out-alt exit-readmode'
             $body.appendChild(newEle)
 
-            function clickFn () {
+            function clickFn() {
                 $body.classList.remove('read-mode')
                 newEle.remove()
                 newEle.removeEventListener('click', clickFn)
@@ -312,7 +316,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
                 $header.classList.add('nav-fixed')
-                if($cookies_window!=null && $cookies_window!=''){
+                if ($cookies_window != null && $cookies_window != '') {
                     $cookies_window.classList.add('cw-hide')
                 }
                 if (window.getComputedStyle($rightside).getPropertyValue('opacity') === '0') {
@@ -331,7 +335,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 200))
 
         // find the scroll direction
-        function scrollDirection (currentTop) {
+        function scrollDirection(currentTop) {
             const result = currentTop > initTop // true is down & false is up
             initTop = currentTop
             return result
@@ -505,7 +509,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    const addPostOutdateNotice = function () {
+
+    /*未使用的声明 const addPostOutdateNotice = function () {
         const data = GLOBAL_CONFIG.noticeOutdate
         const diffDay = btf.diffDate("2022-11-04 20:08:15")
         if (diffDay >= data.limitDay) {
@@ -519,7 +524,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 $targetEle.appendChild(ele)
             }
         }
-    }
+    }*/
 
     const lazyloadImg = () => {
         window.lazyLoadInstance = new LazyLoad({
@@ -549,7 +554,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (GLOBAL_CONFIG.isPost) {
             addRuntime();
-            tocFn();
+            // 修复避免出现目录定位不精准的BUG
+            setTimeout(() => {
+                tocFn();   
+            }, 100); // 100ms延迟
         } else {
             addLastPushDate()
             toggleCardCategory()

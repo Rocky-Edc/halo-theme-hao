@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'moments',title = ${title + ' | ' + site.title}, head = ~{::head}, _title = ${title})}">
+    th:replace="~{modules/layouts/layout :: layout(content = ~{::content}, htmlType = 'moments',title = ${title + ' | ' + site.title}, head = ~{::head}, _title = ${title})}">
 <th:block th:fragment="head">
     <th:block th:replace="~{modules/common/open-graph :: open-graph(_title = ${_title},
                 _permalink = '/moments',
@@ -24,53 +24,60 @@
                         detail = ${theme.config.moment.detail},
                         buttonUrl = ${theme.config.moment.buttonUrl},
                         buttonTitle = ${theme.config.moment.buttonTitle})}"></div>
-                <div id="bber">
-                    <section class="timeline page-1">
-                        <ul class="list" id="waterfall">
-                            <li class="item" th:each="moment : ${moments.items}"
-                                th:with="content=${moment.spec.content}">
-                                <div class="bber-content">
-                                    <div class="datacont" th:if="${not #strings.isEmpty(content.html)}"
-                                         th:utext="${content.html}">
+                <!-- 增加为空校验，避免没有内容的时候页面报错 -->
+                <th:block th:if="${not #lists.isEmpty(moments.items)}">
+                    <div id="bber">
+                        <section class="timeline page-1">
+                            <ul class="list" id="waterfall">
+                                <li class="item" th:each="moment : ${moments.items}"
+                                    th:with="content=${moment.spec.content}">
+                                    <div class="bber-content">
+                                        <div class="datacont" th:if="${not #strings.isEmpty(content.html)}"
+                                            th:utext="${content.html}">
+                                        </div>
+                                        <th:block th:if="${not #lists.isEmpty(content.medium)}">
+                                            <div class="bber-container-img"
+                                                th:if="${#strings.contains(content.medium,'PHOTO')}">
+                                                <img th:each="momentItem : ${content.medium}"
+                                                    th:if="${momentItem.type.name == 'PHOTO'}"
+                                                    th:src="${isLazyload ? loadingImg : momentItem.url}"
+                                                    th:data-lazy-src="${ isLazyload ? momentItem.url : ''}"
+                                                    title="瞬间配图">
+                                                <div class="bber-content-noimg"></div>
+                                                <div class="bber-content-noimg"></div>
+                                                <div class="bber-content-noimg"></div>
+                                            </div>
+                                            <div th:each="momentItem : ${content.medium}" class="bber-music"
+                                                th:if="${momentItem.type.name == 'VIDEO'}">
+                                                <video th:src="${momentItem.url}"></video>
+                                            </div>
+                                        </th:block>
                                     </div>
-                                    <th:block th:if="${not #lists.isEmpty(content.medium)}">
-                                        <div class="bber-container-img"
-                                             th:if="${#strings.contains(content.medium,'PHOTO')}">
-                                            <img th:each="momentItem : ${content.medium}"
-                                                 th:if="${momentItem.type.name == 'PHOTO'}"
-                                                 th:src="${isLazyload ? loadingImg : momentItem.url}"
-                                                 th:data-lazy-src="${ isLazyload ? momentItem.url : ''}" title="瞬间配图">
-                                            <div class="bber-content-noimg"></div>
-                                            <div class="bber-content-noimg"></div>
-                                            <div class="bber-content-noimg"></div>
-                                        </div>
-                                        <div th:each="momentItem : ${content.medium}" class="bber-music"
-                                             th:if="${momentItem.type.name == 'VIDEO'}">
-                                            <video th:src="${momentItem.url}"></video>
-                                        </div>
-                                    </th:block>
-                                </div>
 
-                                <hr>
-                                <div class="bber-bottom">
-                                    <div class="bber-info">
-                                        <div class="bber-info-time"><i class="haofont hao-icon-clock"></i>
-                                            <time class="datatime"
-                                                  th:text="${#dates.format(moment.spec.releaseTime,'yyyy-MM-dd')}"></time>
+                                    <hr>
+                                    <div class="bber-bottom">
+                                        <div class="bber-info">
+                                            <div class="bber-info-time"><i class="haofont hao-icon-clock"></i>
+                                                <time class="datatime"
+                                                    th:text="${#dates.format(moment.spec.releaseTime,'yyyy-MM-dd')}"></time>
+                                            </div>
                                         </div>
+                                        <a class="bber-reply" th:if="${theme.config.comments.use != 'commentWidget'}"
+                                            th:onclick="rightMenuCommentText([[${content.html}]]);" data-pjax-state="">
+                                            <i class="haofont hao-icon-chat--fill" style="font-size: 20px;"></i>
+                                        </a>
                                     </div>
-                                    <a class="bber-reply" th:if="${theme.config.comments.use != 'commentWidget'}"
-                                       th:onclick="rightMenuCommentText([[${content.html}]]);"
-                                       data-pjax-state=""> <i class="haofont hao-icon-chat--fill"
-                                                              style="font-size: 20px;"></i>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </section>
-                    <!--  分页还没写 -->
-                </div>
-                <div id="bber-tips" style="color: var(--heo-secondtext);">- 只展示最近30条短文 -</div>
+                                </li>
+                            </ul>
+                        </section>
+                        <!--  分页还没写 -->
+                    </div>
+                    <div id="bber-tips" style="color: var(--heo-secondtext);">- 只展示最近30条短文 -</div>
+                </th:block>
+                <!-- 增加为空提示 -->
+                <th:block th:unless="${not #lists.isEmpty(moments.items)}">
+                    <div id="bber-tips" style="color: var(--heo-secondtext);">- 暂无内容 -</div>
+                </th:block>
                 <script>heo.reflashEssayWaterFall();</script>
                 <hr th:if="${theme.config.comments.use != 'commentWidget'}" />
                 <!--/* 评论组件 */-->
@@ -82,10 +89,10 @@
 
         </main>
         <!-- 底部 -->
-        <footer th:replace="~{modules/footer}"/>
+        <footer th:replace="~{modules/footer}" />
         <!-- 卡片顶部气泡效果 -->
         <script th:if="${theme.config.other.bubbleEnable}" async data-pjax
-                th:src="${assets_link + '/libs/canvas/bubble.js'}"></script>
+            th:src="${assets_link + '/libs/canvas/bubble.js'}"></script>
     </div>
 
 </th:block>
