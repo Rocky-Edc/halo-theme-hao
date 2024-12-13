@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const translate = GLOBAL_CONFIG.translate
     const snackbarData = GLOBAL_CONFIG.Snackbar
     // 網站默認語言，1: 繁體中文, 2: 簡體中文
@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const rightMenuMsgToTraditionalChinese = '<i class="haofont hao-icon-fanti" style="font-size: 19px;"></i><span>轉為繁體</span>'
     // 同上，但兩處均不建議更改
     const rightMenuMsgToSimplifiedChinese = '<i class="haofont hao-icon-jianti" style="font-size: 19px;"></i><span>转为简体</span>'
-    
-    
+
+
     let currentEncoding = defaultEncoding
     const targetEncodingCookie = 'translate-chn-cht'
     let targetEncoding = saveToLocal.get(targetEncodingCookie) === undefined ? defaultEncoding : Number(saveToLocal.get('translate-chn-cht'))
@@ -67,21 +67,23 @@ document.addEventListener('DOMContentLoaded', function() {
             currentEncoding = 1
             targetEncoding = 2
             translateButtonObject.innerHTML = msgToTraditionalChinese;
-            translateRightMenuButtonObject.innerHTML = rightMenuMsgToTraditionalChinese;
+            if (translateRightMenuButtonObject)
+                translateRightMenuButtonObject.innerHTML = rightMenuMsgToTraditionalChinese;
             if (isSnackbar)
                 btf.snackbarShow(snackbarData.cht_to_chs)
         } else if (targetEncoding === 2) {
             currentEncoding = 2
             targetEncoding = 1
             translateButtonObject.innerHTML = msgToSimplifiedChinese;
-            translateRightMenuButtonObject.innerHTML = rightMenuMsgToSimplifiedChinese;
+            if (translateRightMenuButtonObject)
+                translateRightMenuButtonObject.innerHTML = rightMenuMsgToSimplifiedChinese;
             if (isSnackbar)
                 btf.snackbarShow(snackbarData.chs_to_cht)
         }
         saveToLocal.set(targetEncodingCookie, targetEncoding, 2)
         setLang();
         translateBody()
-        if(GLOBAL_CONFIG.rightMenuEnable){
+        if (GLOBAL_CONFIG.rightMenuEnable) {
             rm.hideRightMenu();
         }
     }
