@@ -341,7 +341,14 @@ spec:
                 colorOneLight: "#ff6655"
                 colorTwoLight: "#ffbf37"
                 colorOneDark: "#e22a16"
-                colorTwoDark: "#da980c"
+                colorTwoDark: "#da980c"              
+              - title: "最近"
+                icon: "haofont hao-icon-plant-fill"
+                url: "/"
+                colorOneLight: "#18e7ae"
+                colorTwoLight: "#1eebeb"
+                colorOneDark: "#099e74"
+                colorTwoDark: "#0ea4a4"
             techStack:
           children:
             - $formkit: select
@@ -391,7 +398,7 @@ spec:
               id: categoryGroup
               key: categoryGroup
               min: 0
-              max: 2
+              max: 3
               children:
                 - $formkit: text
                   name: title
