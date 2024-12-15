@@ -18,10 +18,7 @@
 
 |  站点名称  |          站点地址           |
 |:------:|:-----------------------|
-| 新 · 都在 | https://blog.xindu.site/?preview-theme=theme-hao |
-|楠笙|https://blog.nanshengwx.cn|
-|登逆|https://denlee.cc|
-|阿锦在线|https://www.ajinol.com|
+| Tofu's Tech Bento | https://attempt.site/ |
 
 ## ℹ️ 简介
 
